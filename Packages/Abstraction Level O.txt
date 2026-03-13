@@ -1,0 +1,15 @@
+﻿Abstraction Level O
+Most of the mechanics we've looked at so far are extremely direct--when X happens do Y.
+"When I hit space, change the color of the SpriteRenderer." -ColorChangerController.Update()
+"When I hit arrow keys, move in that direction." -SimplePlayerController.Update()
+There's no book-keeping with these mechanics. You aren't using any public variables to keep track of any state that doesn't come with a Unity component. Consequently, they're generally pretty easy to design, but also pretty limited in function.
+Let's look at how to get fancier with variables!
+public SpriteRenderer SR;
+public Sprite VampireFace;
+void Update()
+{
+if (Input.GetKeyDown (KeyCode.Space))
+{
+SR.sprite VampireFace;
+}
+}
