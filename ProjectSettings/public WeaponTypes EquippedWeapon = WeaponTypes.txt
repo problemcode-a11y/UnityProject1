@@ -1,0 +1,25 @@
+﻿public WeaponTypes EquippedWeapon = WeaponTypes.Pistol;
+
+
+void Update()
+{
+   // If I click. . .
+   if (Input.GetMouseButtonDown(0))
+   {
+       // Depending on the weapon I have, do that attack
+       switch (EquippedWeapon)
+       {
+           case WeaponTypes.Fist:
+               // Insert punch animation code here
+               break;
+           case WeaponTypes.Pistol:
+               // Insert spawning pistol bullet projectile here
+               break;
+           case WeaponTypes.RocketLauncher:
+               // Insert spawning a rocket projectile here
+               break;
+           default:
+               break;
+       }
+   }
+}
