@@ -1,0 +1,98 @@
+﻿import pygame
+
+
+# --- Configuration ---
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+PLAYER_SPEED = 5
+PLAYER_WIDTH = 30
+PLAYER_HEIGHT = 50
+PLAYER_COLOR = (255, 100, 0) # Orange color
+
+
+# --- Initialize Pygame ---
+pygame.init()
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Player Controller Example")
+clock = pygame.time.Clock()
+
+
+# --- Player Class ---
+class Player(pygame.Rect):
+    def __init__(self, x, y, width, height, speed):
+        super().__init__(x, y, width, height)
+        self.speed = speed
+
+
+    def update(self, keys):
+        # Reset movement
+        move_x = 0
+        move_y = 0
+
+
+        # Check for key presses (WASD or Arrow Keys)
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+            move_x -= self.speed
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            move_x += self.speed
+        if keys[pygame.K_UP] or keys[pygame.K_w]:
+            move_y -= self.speed
+        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
+            move_y += self.speed
+
+
+        # Apply movement
+        self.x += move_x
+        self.y += move_y
+
+
+        # Keep player within screen boundaries
+        if self.left < 0:
+            self.left = 0
+        if self.right > SCREEN_WIDTH:
+            self.right = SCREEN_WIDTH
+        if self.top < 0:
+            self.top = 0
+        if self.bottom > SCREEN_HEIGHT:
+            self.bottom = SCREEN_HEIGHT
+
+
+    def draw(self, surface):
+        pygame.draw.rect(surface, PLAYER_COLOR, self)
+
+
+# --- Main Game Loop ---
+def main():
+    player = Player(SCREEN_WIDTH // 2 - PLAYER_WIDTH // 2, SCREEN_HEIGHT // 2 - PLAYER_HEIGHT // 2, PLAYER_WIDTH, PLAYER_HEIGHT, PLAYER_SPEED)
+    running = True
+
+
+    while running:
+        # 1. Event Handling
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+
+
+        # 2. Get all currently pressed keys
+        keys = pygame.key.get_pressed()
+        
+        # 3. Update game state
+        player.update(keys)
+
+
+        # 4. Drawing
+        screen.fill((0, 0, 0)) # Fill the screen with black
+        player.draw(screen)
+        pygame.display.flip() # Update the display
+
+
+        # 5. Cap the frame rate
+        clock.tick(60)
+
+
+    pygame.quit()
+
+
+if __name__ == "__main__":
+    main()
