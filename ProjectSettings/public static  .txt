@@ -1,0 +1,21 @@
+﻿public static class God
+{
+public static GameManager GM;
+public static PlayerScript PS;
+}
+public class GameManager: MonoBehaviour
+{
+public int Score = 0;
+public TextMeshPro ScoreText;
+void Awake ()
+{
+God.GM = this;
+}
+public void GetPoint()
+{
+Score++;
+ScoreText.text = "Score: + Score;
+}
+}
+//On some other script
+God.GM.GetPoint();
