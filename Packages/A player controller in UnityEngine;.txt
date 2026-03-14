@@ -1,0 +1,86 @@
+﻿sing UnityEngine;
+
+
+[RequireComponent(typeof(CharacterController))]
+public class PlayerControl : MonoBehaviour
+{
+    // Public variables for configuration in the Unity Editor
+    public Transform playerCamera;
+    public float forwardSpeed = 5.0f;
+    public float sideSpeed = 4.0f;
+    public float jumpModifier = 8.0f;
+    public float mouseSensitivity = 2.0f;
+    public float minPitch = -60.0f; // Minimum vertical angle
+    public float maxYaw = 60.0f;    // Maximum vertical angle
+
+
+    private CharacterController playerController;
+    private Vector3 playerMovement = Vector3.zero;
+    private float currentPitch = 0.0f; // Current vertical rotation angle
+
+
+    void Start()
+    {
+        // Get the CharacterController component attached to the GameObject
+        playerController = GetComponent<CharacterController>();
+        // Lock the cursor to the center of the screen and hide it
+        Cursor.lockState = CursorLockMode.Locked; 
+    }
+
+
+    void Update()
+    {
+        HandleMovement();
+        HandleRotation();
+    }
+
+
+    private void HandleMovement()
+    {
+        // Get input from keyboard (WASD or arrow keys)
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+
+
+        // Calculate movement direction relative to the player's orientation
+        Vector3 moveDirection = transform.right * horizontalInput * sideSpeed + 
+                                transform.forward * verticalInput * forwardSpeed;
+
+
+        // Apply movement
+        playerController.Move(moveDirection * Time.deltaTime);
+
+
+        // Simple jump logic (gravity implementation required for full effect)
+        if (Input.GetButtonDown("Jump") && playerController.isGrounded)
+        {
+            playerMovement.y = jumpModifier;
+        }
+
+
+        // Apply a simple form of gravity
+        playerMovement.y += Physics.gravity.y * Time.deltaTime;
+        playerController.Move(playerMovement * Time.deltaTime);
+    }
+
+
+    private void HandleRotation()
+    {
+        // Get mouse input
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+
+
+        // Rotate the player left and right (yaw)
+        transform.Rotate(Vector3.up * mouseX);
+
+
+        // Rotate the camera up and down (pitch), clamped to prevent flipping
+        currentPitch = Mathf.Clamp(currentPitch - mouseY, minPitch, maxYaw);
+        playerCamera.localEulerAngles = Vector3.right * currentPitch;
+    }
+}
+
+
+Setup Instructions in Unity
+A play
