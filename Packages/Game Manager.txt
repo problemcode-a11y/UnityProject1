@@ -1,0 +1,26 @@
+﻿public class GameManager: MonoBehaviour
+{
+//Static variable
+public static GameManager Me;
+//A link to the player
+public PlayerScript Player;
+//Keep a list of all the monsters
+public List<EnemyScript> AllEnemies;
+//Awake runs before Start
+void Awake()
+{
+//Register myself to the static variable
+GameManager.Me = this;
+}
+}
+//EnemyScript.Start
+void Start()
+{
+//When I come into existence, let the GM know
+GameManager.Me.AllEnemies.Add(this);
+}
+//PlayerScript.Start
+void Start()
+{
+GameManager.Me.Player = this;
+}
